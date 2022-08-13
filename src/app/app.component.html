@@ -1,0 +1,171 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" style="color:white;"> Candidates</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link"  (click)="onOpenModal(null!, 'add')"  >Ajouter candidature <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input type="search"
+             name="key" id="searchName" class="form-control mr-sm-2" placeholder="Recherche Candidate..." required>
+    </form>
+  </div>
+</nav>
+<div class="container" id="main-container">
+  <div class="row">
+    <div *ngFor="let candidat  of candidats" class="col-md-6 col-xl-6">
+      <div class="card m-b-30">
+        <div class="card-body row">
+          <div class="col-4">
+            <a href=""><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="img-fluid rounded-circle w-60"></a>
+          </div>
+          <div class="col-8 card-title align-self-center mb-0">
+            <h6><b>full name:</b>&nbsp;{{candidat?.name}}&nbsp;{{candidat?.prenom}}</h6>
+             <p class="m-0"><b>job:</b>&nbsp;&nbsp;{{candidat?.derempleure}}</p>
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Email</b>:&nbsp;&nbsp;{{candidat?.email}}</li>
+          <li class="list-group-item"><b>Phone</b>:&nbsp;&nbsp;{{candidat?.phone}} </li>
+        </ul>
+        <div class="card-body">
+          <div class="float-right btn-group btn-group-sm">
+            <button (click)="getImage(candidat.id)" class="btn btn-primary">Curriculum Vitae</button>
+            <button (click)="onDeletcandidat(candidat.id,candidat.name)" class="btn btn-danger">Supprimer</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Student Modal -->
+  <div class="modal fade" id="addCandidatModal" tabindex="-1" role="dialog" aria-labelledby="addCandidatModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"  id="addCandidatModalLabel">Ajouter candidature</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form #addForm="ngForm" (ngSubmit)="onAddCandidat(addForm)" >
+            <ul id="progressbar">
+              <li [ngClass]="step>=1 ? 'active ' : 'inactive'">Personal Details</li>
+              <li [ngClass]="step>=2 ? 'active' : 'inactive'">CV</li>
+              <li [ngClass]="step==3 ? 'active' : 'inactive'">Vlidation</li>
+            </ul>
+            <div *ngIf="step == 1">
+              <div class="form-group">
+                <label Name></label>
+                <input type="text" [(ngModel)] = "this.name" name="name" class="form-control"placeholder="Name" required>
+              </div>
+              <div class="form-group">
+                <label >Prenom</label>
+                <input type="text" [(ngModel)] = "this.prenom" name="prenom" class="form-control"placeholder="prenom" required>
+              </div>
+              <div class="form-group">
+                <label >Email Address</label>
+                <input type="email" [(ngModel)] = "this.email"  name="email" class="form-control"  placeholder="Email" required>
+              </div>
+              <div class="form-group">
+                <label >Phone</label>
+                <input type="text" [(ngModel)] = "this.phone"  name="phone" class="form-control"  placeholder="Phone" required>
+              </div>
+              <div class="form-group">
+                <label>Niveau d'Etude</label>
+                <input type="text" [(ngModel)] = "this.nivetude" name="nivetude" class="form-control"  placeholder="Niveau d'etude" required>
+              </div>
+              <div class="form-group">
+                <label >les annes d'Experience</label>
+                <input type="number" [(ngModel)] = "this.nmbrexp" name="nmbrexp" class="form-control"  placeholder="annes d'experience" required>
+              </div>
+              <div class="form-group">
+                <label >derniere employeur </label>
+                <input type="text" [(ngModel)] = "this.derempleure" name="derempleure" class="form-control" id="imageUrl" placeholder="derniere employeur" required>
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="add-candidat-form-info" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button  [disabled]="addForm.invalid" type="button" class="btn btn-primary" (click)="suivant()" >Suivant</button>
+              </div>
+            </div>
+            <div *ngIf="step == 2">
+              <input type="file" class="form-control mt-3" (change)="onFileChanged($event)" id="one" placeholder="">
+              <div class="modal-footer">
+                <button type="button" id="add-candidat-form-cv" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="precedent()" >Precedent</button>
+                <button  type="button" class="btn btn-primary" (click)="suivant2()" >Suivant</button>
+              </div>
+            </div>
+            <div *ngIf="step == 3">
+
+
+
+              <hr>
+              <div> <h6>*Name:</h6>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;{{this.name}}</div>
+              <hr>
+              <div> <h6>*Prenom:</h6>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;{{this.prenom}}</div>
+              <hr>
+              <div><h6>*Email:</h6>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;{{this.email}}</div>
+              <hr>
+              <div> <h6>*Phone:</h6>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;{{this.phone}}</div>
+              <hr>
+              <div> <h6>*Nbr experience:</h6>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;{{this.nmbrexp}}</div>
+              <hr>
+              <div> <h6>*derniere  employeure:</h6>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; {{this.derempleure}}</div>
+              <hr>
+
+
+              <div class="modal-footer">
+                <button   type="submit()"   class="btn btn-primary"  >Enregistrer</button>
+                <button type="button" id="add-Candidat-form-validate" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+<!-- Notification for no student -->
+<div *ngIf="candidats?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">aucune candidat!</h4>
+
+  </div>
+</div>
+<div *ngIf="piece"  class="card-body pb-0 bg-white p-5 "  >
+  <div class="row">
+    <div class="col-md-5" *ngFor="let image of this.file; let i = index">
+      <img [src]="'data:image/jpeg;base64,' + image.picByte" style="width: 500px">
+      <h1 class="d-flex align-items-center text-dark fw-bolder  mb-5  my-1 fs-3"> image {{i+1}}</h1>
+    </div>
+  </div>
+  <div class="card-body border-top p-9" *ngIf="this.file === undefined">
+    <div class="notice d-flex bg-light-warning rounded  border-warning border border-dashed mb-9  p-6">
+      <div class="d-flex flex-stack flex-grow-1">
+        <div class="fw-bold">
+          <h4 class="text-gray-800 fw-bolder">
+            Cet candidate ne contient pas de pièces jointes
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
